@@ -1,0 +1,1 @@
+main() { char n[100]; while (gets(n) != '\0')puts(n); return 0; }
