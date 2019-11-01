@@ -58,7 +58,7 @@ void Move_Knight::Move(int& x, int& y, int& NEnergy) {
 	int MoveY = DY[RandDirection];
 	x = (x + MoveX) >= 0 && (x + MoveX) <= 15 ? x + MoveX : x + MoveX < 0 ? 0 : 15;
 	y = (y + MoveY) >= 0 && (y + MoveY) <= 7 ? y + MoveY : y + MoveY < 0 ? 0 : 7;
-} //나이트의 이동 알고리즘 (무작위 방향으로 체스의 '나이트' 처럼 L자로 이동)
+} //기사의 이동 알고리즘 (무작위 방향으로 체스의 '나이트' 처럼 L자로 이동)
 
 class NormalMonster : public Monster {
 public:
@@ -93,9 +93,7 @@ public:
 class Knight : public Monster {
 public:
 	Knight(string _Name, string _Icon) :
-		Monster(_Name, _Icon) {
-		SetMoveBehavior(new Move_Knight);
-	}
-}; //생성자를 통해 에게 맞는 이동 알고리즘 할당
+		Monster(_Name, _Icon) { SetMoveBehavior(new Move_Knight); }
+}; //생성자를 통해 Knight에게 맞는 이동 알고리즘 할당
 
 #endif

@@ -39,7 +39,6 @@ void Monster::SetMoveBehavior(MoveBehavior* temp) {
 }
 //알맞은 이동 알고리즘을 할당시키는 함수
 
-
 void Screen::StartScreen(vector<Monster*>& _Monsters) {
 	int i, j;
 	char ch = '0';
