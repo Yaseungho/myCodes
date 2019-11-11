@@ -82,7 +82,7 @@ void Screen::Update(vector<Monster*>& _Monsters) {
 	cout << "[ Monster World (몬스터들의 세상) ]\n\n";
 	for (i = 0; i < HEIGHT; i++) {
 		for (j = 0; j < WIDTH; j++) {
-			cout << ((Map[j][i] == true) ? "■" : "ㆍ");
+			cout << ((Map[j][i] == true) ? "■" : "  ");
 		} cout << "\n";
 	}
 	for (Iter = _Monsters.begin(); Iter != _Monsters.end();) {
