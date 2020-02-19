@@ -1,74 +1,75 @@
 #include <iostream>
 #include <vector>
-#include <utility>
 using namespace std;
 
-const int coverType[4][3][2] = {
-	{{ 0, 0},{ 1, 0},{ 0, 1}},
-	{{ 0, 0},{ 0, 1},{ 1, 1}},
-	{{ 0, 0},{ 1, 0},{ 1, 1}},
-	{{ 0, 0},{ 1, 0},{ 1,-1}}
+int H, W;
+
+int Dpos[4][3][2] = {
+	{{0,0}, {1, 0}, {0, 1}},
+	{{0,0}, {1, 0}, {1, 1}},
+	{{0,0}, {1, 0}, {1,-1}},
+	{{0,0}, {0, 1}, {1, 1}}
 };
 
-bool set(vector<vector<int>>& board, int y, int x, int type, int delta) {
-	bool ok = true;
-	for (int i = 0; i < 3; i++) {
-		const int ny = y + coverType[type][i][0];
-		const int nx = x + coverType[type][i][1];
-		if (ny < 0 || ny >= board.size() || nx < 0 || nx >= board[i].size()) ok = false;
-		else if ((board[ny][nx] += delta) > 1) ok = false;
+bool IsCanCover(int i, int sy, int sx, vector< vector <bool> >& board) {
+	if (sy + Dpos[i][1][0] >= 0 &&
+		sx + Dpos[i][1][1] >= 0 &&
+		sy + Dpos[i][1][0] < H &&
+		sx + Dpos[i][1][1] < W &&
+		sy + Dpos[i][2][0] >= 0 &&
+		sx + Dpos[i][2][1] >= 0 &&
+		sy + Dpos[i][2][0] < H &&
+		sx + Dpos[i][2][1] < W) {
+		if (!board[sy + Dpos[i][0][0]][sx + Dpos[i][0][1]] &&
+			!board[sy + Dpos[i][1][0]][sx + Dpos[i][1][1]] &&
+			!board[sy + Dpos[i][2][0]][sx + Dpos[i][2][1]]) return true;
 	}
-	return ok;
+	return false;
 }
 
-int cover(vector<vector<int>>& board) {
-	int y = -1, x = -1;
-	for (int i = 0; i < board.size(); i++) {
-		for (int j = 0; j < board[i].size(); j++) {
-			if (board[i][j] == 0) {
-				y = i;
-				x = j;
-				break;
-			}
-		}
-		if (y != -1) break;
+int Cover(vector< vector <bool> >& board) {
+	int sx = 0, sy = 0, ret = 0;
+	for (; sy < H; sy++) {
+		for (sx = 0; sx < W; sx++) if (!board[sy][sx]) break;
+		if (sx != W) break;
 	}
-	if (y == -1) return 1;
-	int ret = 0;
-	for (int type = 0; type < 4; type++) {
-		if (set(board, y, x, type, 1)) ret += cover(board);
-		set(board, y, x, type, -1);
+	if (sy == H && sx == W) return 1;
+	for (int i = 0; i < 4; i++) {
+		if (IsCanCover(i, sy, sx, board)) {
+			board[sy + Dpos[i][0][0]][sx + Dpos[i][0][1]] = true;
+			board[sy + Dpos[i][1][0]][sx + Dpos[i][1][1]] = true;
+			board[sy + Dpos[i][2][0]][sx + Dpos[i][2][1]] = true;
+			ret += Cover(board);
+			board[sy + Dpos[i][0][0]][sx + Dpos[i][0][1]] = false;
+			board[sy + Dpos[i][1][0]][sx + Dpos[i][1][1]] = false;
+			board[sy + Dpos[i][2][0]][sx + Dpos[i][2][1]] = false;
+		}
 	}
 	return ret;
 }
 
 int main() {
-	int T;
-	cin >> T;
-	while (T--) {
-		vector< vector<int> > board;
-		int height, width, sum = 0;
-		cin >> height >> width;
-		for (int i = 0; i < height; i++) {
-			vector<int> element;
-			board.push_back(element);
+	int C;
+	cin >> C;
+	while (C--) {
+		vector< vector <bool> > board;
+		int cnt = 0;
+		char temp;
+		cin >> H >> W;
+		for (int i = 0; i < H; i++) {
+			vector<bool> vec;
+			board.push_back(vec);
 		}
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
-				char num;
-				cin >> num;
-				if(num == '#') board[i].push_back(1);
-				else if (num == '.') {
-					board[i].push_back(0);
-					sum++;
-				}
+		for (int i = 0; i < H; i++) {
+			for (int j = 0; j < W; j++) {
+				cin >> temp;
+				if (temp == '.') cnt++;
+				board[i].push_back(temp == '#' ? true : false);
 			}
 		}
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
-				cout << board[i][j] << " ";
-			} cout << "\n";
+		if (cnt % 3 != 0) cout << "0\n";
+		else {
+			cout << Cover(board) << "\n";
 		}
-		cout << (sum % 3 ? 0 : cover(board)) << "\n";
 	}
 }
