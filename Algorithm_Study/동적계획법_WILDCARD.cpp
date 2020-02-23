@@ -1,6 +1,7 @@
 #include <iostream>
-#include <string>
+#include <cstring>
 #include <vector>
+#include <algorithm>
 using namespace std;
 int DP[101][101];
 
@@ -29,6 +30,7 @@ int main() {
 			cin >> S;
 			if (match(0, 0)) result.push_back(S);
 		}
+		sort(result.begin(), result.end());
 		for (int i = 0; i < result.size(); i++) cout << result[i] << "\n";
 	}
 	return 0;

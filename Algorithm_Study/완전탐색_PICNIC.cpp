@@ -37,8 +37,7 @@ int main() {
 			areFriends[first][second] = true;
 			areFriends[second][first] = true;
 		}
-		results.push_back(countPairings(taken, nFriends));
+		cout << countPairings(taken, nFriends) << "\n";
 	}
-	for (auto& v : results) cout << v << "\n";
 	return 0;
 }
