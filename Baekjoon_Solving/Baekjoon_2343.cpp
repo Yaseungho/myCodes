@@ -1,38 +1,35 @@
 #include <iostream>
 #include <vector>
-#define IMPOSSIBLE 999999999
+typedef long long ll;
 using namespace std;
 
-vector<long long> vec;
+vector<ll> vec;
 
-long long func(long long length) {
-	long long ret = 0, temp = 0;
-	for (long long i = 0; i < vec.size(); i++) {
-		if (vec[i] > length) return IMPOSSIBLE;
-		if (temp + vec[i] > length) {
-			temp = vec[i];
+ll func(ll x) {
+	ll ret = 1, cnt = 0;
+	for (ll i = 0; i < vec.size(); i++) {
+		if (cnt + vec[i] > x) {
+			cnt = vec[i];
 			ret++;
 		}
-		else temp += vec[i];
+		else cnt += vec[i];
 	}
-	return ret + 1;
+	return ret;
 }
 
 int main() {
-	long long N, M, time, Start = 0, End = 1000000000, mid, temp, result = -1;
+	ll N, M, s = 0, e = 2e9;
 	cin >> N >> M;
 	while (N--) {
-		cin >> time;
-		vec.push_back(time);
+		ll temp;
+		cin >> temp;
+		vec.push_back(temp);
+		s = max(s, temp);
 	}
-	while (End - Start > 1) {
-		mid = (Start + End) / 2;
-		temp = func(mid);
-		if (temp > M) Start = mid;
-		else {
-			result = mid;
-			End = mid;
-		}
+	while (s <= e) {
+		ll mid = (s + e) / 2;
+		if (func(mid) > M) s = mid + 1;
+		else e = mid - 1;
 	}
-	cout << result;
+	cout << e + 1 << "\n";
 }

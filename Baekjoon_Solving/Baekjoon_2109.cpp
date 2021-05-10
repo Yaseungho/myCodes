@@ -1,19 +1,8 @@
-#include <iostream>
-#include <algorithm>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
-class lecture {
-public:
-	int day;
-	int pay;
-	lecture(int _d, int _p) : day{ _d }, pay{ _p }{}
-};
-vector<lecture> lectures;
+vector<pair<int,int>> lectures;
 bool arr[10001];
-bool compare(const lecture& a, const lecture& b) {
-	return a.pay > b.pay;
-}
 
 int main() {
 	int N, sum = 0;
@@ -21,14 +10,14 @@ int main() {
 	for (int i = 0; i < N; i++) {
 		int p, d;
 		cin >> p >> d;
-		lectures.push_back(lecture{ d,p });
+		lectures.push_back({ p,d });
 	}
-	sort(lectures.begin(), lectures.end(), compare);
+	sort(lectures.begin(), lectures.end(), greater<pair<int,int>>());
 	for (int i = 0; i < N; i++) {
-		for (int j = lectures[i].day; j > 0; j--) {
+		for (int j = lectures[i].second; j > 0; j--) {
 			if (arr[j] == 0) {
 				arr[j] = 1;
-				sum += lectures[i].pay;
+				sum += lectures[i].first;
 				break;
 			}
 		}

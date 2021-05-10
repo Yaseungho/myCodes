@@ -1,25 +1,19 @@
-#include <iostream>
-#include <vector>
-#include <utility>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
-bool compare(const pair<int, int> a, const pair<int, int> b) {
-	return a.first < b.first;
-}
-
 int main() {
-	int result = 0, time = 0;
-	vector< pair<int, int> > vec;
+	int res = 0, time = 0;
+	vector<int> vec;
 	for (int i = 0; i < 11; i++) {
 		int D, V;
 		cin >> D >> V;
-		vec.push_back({ D,V });
+		vec.push_back(D);
+		res += 20 * V;
 	}
-	sort(vec.begin(), vec.end(), compare);
+	sort(vec.begin(), vec.end());
 	for (int i = 0; i < 11; i++) {
-		time += vec[i].first;
-		result += vec[i].second * 20 + time;
+		time += vec[i];
+		res += time;
 	}
-	cout << result << "\n";
+	cout << res << "\n";
 }

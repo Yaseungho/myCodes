@@ -1,26 +1,21 @@
-#include <iostream>
-#include <algorithm>
+#include <bits/stdc++.h>
+typedef long long ll;
 using namespace std;
-long long N;
-long long func(long long key) {
-	long long ret = 0;
-	for (long long i = 1; i <= N; i++) {
-		ret += min(N, key / i);
-	}
+ll N;
+
+ll func(ll key) {
+	ll ret = 0;
+	for (ll i = 1; i <= N; i++) ret += min(N, key / i);
 	return ret;
 }
 
 int main() {
-	long long K, Start = 0, End = 10000000000, mid, result = 0;
+	ll K, s = 0, e = 1e9;
 	cin >> N >> K;
-	while (End - Start > 1) {
-		mid = (Start + End) / 2;
-		if (func(mid) < K) Start = mid;
-		else {
-			result = mid;
-			End = mid;
-		}
+	while (s <= e) {
+		ll mid = (s + e) / 2;
+		if (func(mid) < K) s = mid + 1;
+		else e = mid - 1;
 	}
-	cout << result;
-	return 0;
+	cout << s << "\n";
 }

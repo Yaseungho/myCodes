@@ -5,7 +5,7 @@ using namespace std;
 vector<vector<int>> vec;
 int N;
 
-int divide(int sx, int sy, int ex, int ey, bool is) {//is가 1일시 가로, 2일시 세로 자르기
+int divide(int sx, int sy, int ex, int ey, bool is) {//is가 0일시 가로, 1일시 세로 자르기
 	int N1 = 0, N2 = 0;
 	if (sx < 0 || sy < 0 || ex > N || ey > N) return true;
 	vector<pair<int, int>> coordinates;//x,y 저장
@@ -13,7 +13,7 @@ int divide(int sx, int sy, int ex, int ey, bool is) {//is가 1일시 가로, 2일시 세
 		for (int j = sx; j < ex; j++) {
 			if (vec[i][j] == 1) {
 				N1++;
-				coordinates.push_back(make_pair(j, i));
+				coordinates.push_back({ j, i });
 			}
 			else if (vec[i][j] == 2) {
 				N2++;
@@ -31,16 +31,22 @@ int divide(int sx, int sy, int ex, int ey, bool is) {//is가 1일시 가로, 2일시 세
 			int nx = coordinates[i].first;
 			int ny = coordinates[i].second;
 			if (is) {//가로 자르기
-				int temp = 0;
-				for (int k = sx; k < ex; k++) if (vec[ny][k] == 1) temp++;
-				if (temp > 1) continue;
+				int temp = 0, temp2 = 0;
+				for (int k = sx; k < ex; k++) {
+					if (vec[ny][k] == 1) temp++;
+					if (vec[ny][k] == 2) temp2 = 1;
+				}
+				if (temp > 1 || temp2) continue;
 				if (ny - sy < 1 || ey - ny < 1) continue;
 				res += divide(sx, sy, ex, ny, false) * divide(sx, ny + 1, ex, ey, false);
 			}
 			else {//세로 자르기
-				int temp = 0;
-				for (int k = sy; k < ey; k++) if (vec[k][nx] == 1) temp++;
-				if (temp > 1) continue;
+				int temp = 0, temp2 = 0;
+				for (int k = sy; k < ey; k++) {
+					if (vec[k][nx] == 1) temp++;
+					if (vec[k][nx] == 2) temp2++;
+				}
+				if (temp > 1 || temp2) continue;
 				if (nx - sx < 1 || ex - nx < 1) continue;
 				res += divide(sx, sy, nx, ey, true) * divide(nx + 1, sy, ex, ey, true);
 			}

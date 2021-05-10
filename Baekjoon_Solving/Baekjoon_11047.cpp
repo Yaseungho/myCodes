@@ -1,23 +1,17 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
+vector<int> vec;
 
 int main() {
-	vector<int> vec;
-	int N, K, cnt = 0;
+	int N, K, res = 0;
 	cin >> N >> K;
-	while (N--) {
-		int num;
-		cin >> num;
-		vec.push_back(num);
-	}
+	vec.resize(N);
+	for (int i = 0; i < N; i++) cin >> vec[i];
 	reverse(vec.begin(), vec.end());
-	for (int i = 0; i < vec.size(); i++) {
+	for (int i = 0; i < N; i++) {
 		int temp = K / vec[i];
 		K -= temp * vec[i];
-		cnt += temp;
+		res += temp;
 	}
-	cout << cnt;
-	return 0;
+	cout << res << "\n";
 }
